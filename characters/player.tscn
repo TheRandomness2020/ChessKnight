@@ -1,10 +1,14 @@
-[gd_scene load_steps=25 format=3 uid="uid://hcl56gh6y4jp"]
+[gd_scene load_steps=27 format=3 uid="uid://hcl56gh6y4jp"]
 
 [ext_resource type="Script" path="res://characters/player.gd" id="1_53faa"]
 [ext_resource type="Texture2D" uid="uid://d281axt3g3som" path="res://pixil-frame-0 (50).png" id="2_fabf5"]
 [ext_resource type="Texture2D" uid="uid://bclios1cg1wrp" path="res://pixilart-sprite.png" id="3_u4coa"]
 [ext_resource type="Texture2D" uid="uid://bmcitxnk6ddvx" path="res://pixil-frame-0 (51).png" id="4_n7jo6"]
 [ext_resource type="Texture2D" uid="uid://xr3qxncqofgd" path="res://pixilart-sprite (1).png" id="5_i2ke3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fi4u5"]
+atlas = ExtResource("5_i2ke3")
+region = Rect2(0, 0, 32, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hpxw8"]
 atlas = ExtResource("5_i2ke3")
@@ -76,6 +80,14 @@ region = Rect2(192, 0, 32, 48)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ukxvq"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fi4u5")
+}],
+"loop": false,
+"name": &"attack_sword",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("4_n7jo6")
@@ -163,9 +175,11 @@ animations = [{
 radius = 6.0
 height = 38.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t41j4"]
+size = Vector2(10, 31)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_53faa")
-speed = 50.0
 jump_velocity = -200.0
 
 [node name="Pixil-frame-0(50)" type="Sprite2D" parent="."]
@@ -184,7 +198,7 @@ hframes = 14
 position = Vector2(-14, -22)
 scale = Vector2(0.909961, 0.909961)
 sprite_frames = SubResource("SpriteFrames_ukxvq")
-animation = &"jump_loop"
+animation = &"attack_sword"
 autoplay = "idle"
 centered = false
 
@@ -192,5 +206,17 @@ centered = false
 position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_jlkjt")
 one_way_collision_margin = 0.0
+
+[node name="AttackBoxMelee" type="Area2D" parent="."]
+
+[node name="SlashBoxRight" type="CollisionShape2D" parent="AttackBoxMelee"]
+position = Vector2(15, 0)
+shape = SubResource("RectangleShape2D_t41j4")
+disabled = true
+
+[node name="SlashBoxLeft" type="CollisionShape2D" parent="AttackBoxMelee"]
+position = Vector2(-15, 0)
+shape = SubResource("RectangleShape2D_t41j4")
+disabled = true
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
